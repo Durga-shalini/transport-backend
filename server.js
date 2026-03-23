@@ -1,15 +1,35 @@
+const express = require('express');
+const cors = require('cors');
+const http = require('http');
 
-const express=require('express');
-const cors=require('cors');
-const connect=require('./config/db');
+require("dotenv").config();
 
-const app=express();
-connect();
 
+const connectDB = require('./config/db');
+const { initSocket } = require('./socket/socket'); 
+
+const app = express();
+
+// DB connect
+connectDB();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth',require('./routes/auth'));
-app.use('/api/load',require('./routes/load'));
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/load', require('./routes/loadRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
+app.use("/api/admin", require("./routes/adminRoutes"));
 
-app.listen(5000,()=>console.log('Server running'));
+//  Create HTTP server
+const server = http.createServer(app);
+
+// Initialize socket here
+initSocket(server);
+
+// Start server
+server.listen(5000, () => {
+    console.log("Server running on 5000");
+});
