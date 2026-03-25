@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
-
+const dns =require('dns')
 require("dotenv").config();
 
-
+dns.setDefaultResultOrder("ipv4first");
 const connectDB = require('./config/db');
 const { initSocket } = require('./socket/socket');
 
