@@ -6,10 +6,10 @@ require("dotenv").config();
 
 
 const connectDB = require('./config/db');
-const { initSocket } = require('./socket/socket'); 
+const { initSocket } = require('./socket/socket');
 
 const app = express();
-
+const PORT = process.env.PORT || 5000;
 // DB connect
 connectDB();
 
@@ -30,6 +30,6 @@ const server = http.createServer(app);
 initSocket(server);
 
 // Start server
-server.listen(5000, () => {
-    console.log("Server running on 5000");
+server.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
 });
